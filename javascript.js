@@ -8,8 +8,8 @@ const game = (function() {
         } else {
             currentPlayer = players[0];
         }
-        checkResult();
-        gui.render();
+        checkGameWin();
+        gui.renderBoard();
         console.log("Players turn: " + currentPlayer.name);
     }
 
@@ -23,11 +23,13 @@ const game = (function() {
         }
     }
 
-    const checkResult = function() {
+    const checkGameWin = function() {
         currentBoard = gameboard.get();
 
         if (checkWinHori(currentBoard) === true || checkWinVert(currentBoard) === true || checkWinDiag(currentBoard) === true) {
-            console.log("Game has been won!")
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -102,7 +104,7 @@ function createPlayer(name, icon) {
 
 const gui = (function() {
 
-    const render = function() {
+    const renderBoard = function() {
         const boardEl = document.querySelector("#gameboard");
         boardEl.replaceChildren();
         
@@ -113,10 +115,14 @@ const gui = (function() {
             boardSquare.setAttribute("ID", index);
             boardSquare.textContent = item;
             boardEl.appendChild(boardSquare);
+
+            boardSquare.addEventListener("click", (e) => {
+                game.makeMove(e.target.id);
+            });
         });
     }
 
-    return {render};
+    return {renderBoard};
 })();
 
-gui.render();
+gui.renderBoard();
