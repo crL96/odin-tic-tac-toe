@@ -30,7 +30,7 @@ const game = (function() {
         gui.renderTurnDisp(`It's ${currentPlayer.name}'s turn`);
     }
 
-    const reset = function() {
+    const newGame = function() {
         gameboard.reset();
         currentPlayer = player.playerList[0];
         init();
@@ -38,8 +38,11 @@ const game = (function() {
 
     const newTurn = function() {
         gui.renderBoard();
-        if (checkGameWin() === true) {
+        if (checkResult() === "win") {
             gui.renderTurnDisp(currentPlayer.name + " won the game!");
+        }
+        else if (checkResult() === "draw") {
+            gui.renderTurnDisp("It's a draw!");
         }
         else {
             if (currentPlayer === player.playerList[0]) {
@@ -58,13 +61,14 @@ const game = (function() {
         }
     }
 
-    const checkGameWin = function() {
+    const checkResult = function() {
         currentBoard = gameboard.get();
 
         if (checkWinHori(currentBoard) === true || checkWinVert(currentBoard) === true || checkWinDiag(currentBoard) === true) {
-            return true;
-        } else {
-            return false;
+            return "win";
+        } 
+        else if (!(currentBoard.includes(""))) {
+            return "draw";
         }
     }
 
@@ -99,7 +103,7 @@ const game = (function() {
         }
     }
 
-    return {makeMove, init, reset};
+    return {makeMove, init, newGame};
 })();
 
 
@@ -169,10 +173,11 @@ const gui = (function() {
     // New game button
     const newGameBtn = document.querySelector("#newGameBtn");
     newGameBtn.addEventListener("click", () => {
-        game.reset();
+        game.newGame();
     });
 
     return {renderBoard, renderTurnDisp};
 })();
+
 
 game.init();
