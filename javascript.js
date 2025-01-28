@@ -1,6 +1,20 @@
+const player = (function() {
+    const create = function(name, icon) {
+        return {name, icon};
+    }
+    
+    const playerList = [create("Player 1", "X"), create("Player 2", "O")]
+
+    const changeName = function(newName, index) {
+        playerList[index].name = newName;
+    }
+
+    return {create, playerList, changeName};
+})();
+
+
 const game = (function() {
-    const players = [createPlayer("Carl", "X"), createPlayer("John", "O")];
-    let currentPlayer = players[0];
+    let currentPlayer = player.playerList[0];
 
     const init = function() {
         gui.renderBoard();
@@ -13,10 +27,10 @@ const game = (function() {
             gui.renderTurnDisp(currentPlayer.name + " won the game!");
         }
         else {
-            if (currentPlayer === players[0]) {
-                currentPlayer = players[1];
+            if (currentPlayer === player.playerList[0]) {
+                currentPlayer = player.playerList[1];
             } else {
-                currentPlayer = players[0];
+                currentPlayer = player.playerList[0];
             }
             gui.renderTurnDisp(`It's ${currentPlayer.name}'s turn`);
         }
@@ -95,17 +109,6 @@ const gameboard = (function() {
 
 
 
-// const player = (function() {
-//     const create = function(name, icon) {
-//         return {name, icon};
-//     }
-    
-//     return {create};
-// })();
-
-function createPlayer(name, icon) {
-    return {name, icon}
-}
 
 
 const gui = (function() {
