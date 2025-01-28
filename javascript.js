@@ -2,6 +2,11 @@ const game = (function() {
     const players = [createPlayer("Carl", "X"), createPlayer("John", "O")];
     let currentPlayer = players[0];
 
+    const init = function() {
+        gui.renderBoard();
+        gui.renderTurnDisp(`It's ${currentPlayer.name}'s turn`);
+    }
+
     const newTurn = function() {
         gui.renderBoard();
         if (checkGameWin() === true) {
@@ -65,7 +70,7 @@ const game = (function() {
         }
     }
 
-    return {makeMove};
+    return {makeMove, init};
 })();
 
 
@@ -131,4 +136,4 @@ const gui = (function() {
     return {renderBoard, renderTurnDisp};
 })();
 
-gui.renderBoard();
+game.init();
