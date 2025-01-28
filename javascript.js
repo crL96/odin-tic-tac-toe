@@ -9,9 +9,11 @@ const player = (function() {
     const changeName = function(index) {
         const newNameEl = document.querySelector("#newName");
         const newNameVal = newNameEl.value;
-        playerList[index].name = newNameVal;
-        newNameEl.value = "";
-        game.init();
+        if (!(newNameVal === "")) {
+            playerList[index].name = newNameVal;
+            newNameEl.value = "";
+            game.init();
+        }
     }
 
     return {create, playerList, changeName};
@@ -26,6 +28,12 @@ const game = (function() {
     const init = function() {
         gui.renderBoard();
         gui.renderTurnDisp(`It's ${currentPlayer.name}'s turn`);
+    }
+
+    const reset = function() {
+        gameboard.reset();
+        currentPlayer = player.playerList[0];
+        init();
     }
 
     const newTurn = function() {
@@ -91,14 +99,14 @@ const game = (function() {
         }
     }
 
-    return {makeMove, init};
+    return {makeMove, init, reset};
 })();
 
 
 
 // Gameboard Module
 const gameboard = (function() {
-    const board = ["", "", "", "", "", "", "", "", ""];
+    let board = ["", "", "", "", "", "", "", "", ""];
     
     update = function(index, icon) {
         board[index] = icon;
@@ -111,8 +119,12 @@ const gameboard = (function() {
     getBox = function(index) {
         return board[index];
     }
+
+    reset = function() {
+        board = ["", "", "", "", "", "", "", "", ""];
+    }
     
-    return {get, update, getBox};
+    return {get, update, getBox, reset};
 })();
 
 
@@ -141,8 +153,9 @@ const gui = (function() {
     const renderTurnDisp = function(message) {
         const turnDisplay = document.querySelector("#turnDisplay");
         turnDisplay.textContent = message;
-    }
+    }   
 
+    //Change name buttons
     const changeNameBtn0 = document.querySelector("#nameBtn0");
     changeNameBtn0.addEventListener("click", () => {
         player.changeName(0);
@@ -151,6 +164,12 @@ const gui = (function() {
     const changeNameBtn1 = document.querySelector("#nameBtn1");
     changeNameBtn1.addEventListener("click", () => {
         player.changeName(1);
+    });
+
+    // New game button
+    const newGameBtn = document.querySelector("#newGameBtn");
+    newGameBtn.addEventListener("click", () => {
+        game.reset();
     });
 
     return {renderBoard, renderTurnDisp};
