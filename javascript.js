@@ -1,3 +1,4 @@
+//Player Module
 const player = (function() {
     const create = function(name, icon) {
         return {name, icon};
@@ -5,14 +6,20 @@ const player = (function() {
     
     const playerList = [create("Player 1", "X"), create("Player 2", "O")]
 
-    const changeName = function(newName, index) {
-        playerList[index].name = newName;
+    const changeName = function(index) {
+        const newNameEl = document.querySelector("#newName");
+        const newNameVal = newNameEl.value;
+        playerList[index].name = newNameVal;
+        newNameEl.value = "";
+        game.init();
     }
 
     return {create, playerList, changeName};
 })();
 
 
+
+// Game Module
 const game = (function() {
     let currentPlayer = player.playerList[0];
 
@@ -89,6 +96,7 @@ const game = (function() {
 
 
 
+// Gameboard Module
 const gameboard = (function() {
     const board = ["", "", "", "", "", "", "", "", ""];
     
@@ -109,8 +117,7 @@ const gameboard = (function() {
 
 
 
-
-
+// GUI Module
 const gui = (function() {
 
     const renderBoard = function() {
@@ -136,22 +143,14 @@ const gui = (function() {
         turnDisplay.textContent = message;
     }
 
-    const nameUpdate = function(index) {
-        const newNameEl = document.querySelector("#newName");
-        const newNameVal = newNameEl.value;
-        player.changeName(newNameVal, index);
-        newNameEl.value = "";
-        game.init();
-    }
-
     const changeNameBtn0 = document.querySelector("#nameBtn0");
     changeNameBtn0.addEventListener("click", () => {
-        nameUpdate(0);
+        player.changeName(0);
     });
 
     const changeNameBtn1 = document.querySelector("#nameBtn1");
     changeNameBtn1.addEventListener("click", () => {
-        nameUpdate(1);
+        player.changeName(1);
     });
 
     return {renderBoard, renderTurnDisp};
