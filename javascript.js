@@ -127,7 +127,7 @@ const gui = (function() {
 
             boardSquare.addEventListener("click", (e) => {
                 game.makeMove(e.target.id);
-            });
+            },{once: true});
         });
     }
 
@@ -135,6 +135,24 @@ const gui = (function() {
         const turnDisplay = document.querySelector("#turnDisplay");
         turnDisplay.textContent = message;
     }
+
+    const nameUpdate = function(index) {
+        const newNameEl = document.querySelector("#newName");
+        const newNameVal = newNameEl.value;
+        player.changeName(newNameVal, index);
+        newNameEl.value = "";
+        game.init();
+    }
+
+    const changeNameBtn0 = document.querySelector("#nameBtn0");
+    changeNameBtn0.addEventListener("click", () => {
+        nameUpdate(0);
+    });
+
+    const changeNameBtn1 = document.querySelector("#nameBtn1");
+    changeNameBtn1.addEventListener("click", () => {
+        nameUpdate(1);
+    });
 
     return {renderBoard, renderTurnDisp};
 })();
