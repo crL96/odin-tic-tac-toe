@@ -13,7 +13,7 @@ const game = (function() {
             } else {
                 currentPlayer = players[0];
             }
-            gui.renderTurnDisp(`It's ${currentPlayer.name}'s turn!`);
+            gui.renderTurnDisp(`It's ${currentPlayer.name}'s turn`);
         }
     }
 
@@ -21,9 +21,6 @@ const game = (function() {
         if (gameboard.getBox(index) === "") {
             gameboard.update(index, currentPlayer.icon);
             newTurn();
-        }
-        else {
-            console.log("Already chosen, choose another one");
         }
     }
 
