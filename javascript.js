@@ -9,7 +9,7 @@ const game = (function() {
             currentPlayer = players[0];
         }
         checkResult();
-        console.log(gameboard.get());
+        gui.render();
         console.log("Players turn: " + currentPlayer.name);
     }
 
@@ -68,7 +68,7 @@ const game = (function() {
 
 
 const gameboard = (function() {
-    board = ["", "", "", "", "", "", "", "", ""];
+    const board = ["", "", "", "", "", "", "", "", ""];
     
     update = function(index, icon) {
         board[index] = icon;
@@ -98,11 +98,25 @@ const gameboard = (function() {
 function createPlayer(name, icon) {
     return {name, icon}
 }
-// game.makeMove(0);
-// game.makeMove(8);
-// game.makeMove(3);
-// game.makeMove(4);
-// game.makeMove(6);
 
 
-console.log(gameboard.get());
+const gui = (function() {
+
+    const render = function() {
+        const boardEl = document.querySelector("#gameboard");
+        boardEl.replaceChildren();
+        
+        const currentBoard = gameboard.get();
+        currentBoard.forEach((item, index) => {
+            const boardSquare = document.createElement("div")
+            boardSquare.classList.add("boardSquare");
+            boardSquare.setAttribute("ID", index);
+            boardSquare.textContent = item;
+            boardEl.appendChild(boardSquare);
+        });
+    }
+
+    return {render};
+})();
+
+gui.render();
