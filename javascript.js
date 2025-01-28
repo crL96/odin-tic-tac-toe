@@ -2,21 +2,25 @@ const game = (function() {
     const players = [createPlayer("Carl", "X"), createPlayer("John", "O")];
     let currentPlayer = players[0];
 
-    const nextTurn = function() {
-        if (currentPlayer === players[0]) {
-            currentPlayer = players[1];
-        } else {
-            currentPlayer = players[0];
-        }
-        checkGameWin();
+    const newTurn = function() {
         gui.renderBoard();
-        console.log("Players turn: " + currentPlayer.name);
+        if (checkGameWin() === true) {
+            gui.renderTurnDisp(currentPlayer.name + " won the game!");
+        }
+        else {
+            if (currentPlayer === players[0]) {
+                currentPlayer = players[1];
+            } else {
+                currentPlayer = players[0];
+            }
+            gui.renderTurnDisp(`It's ${currentPlayer.name}'s turn!`);
+        }
     }
 
     const makeMove = function(index) {
         if (gameboard.getBox(index) === "") {
             gameboard.update(index, currentPlayer.icon);
-            nextTurn();
+            newTurn();
         }
         else {
             console.log("Already chosen, choose another one");
@@ -122,7 +126,12 @@ const gui = (function() {
         });
     }
 
-    return {renderBoard};
+    const renderTurnDisp = function(message) {
+        const turnDisplay = document.querySelector("#turnDisplay");
+        turnDisplay.textContent = message;
+    }
+
+    return {renderBoard, renderTurnDisp};
 })();
 
 gui.renderBoard();
